@@ -24,7 +24,7 @@
             "type": "font",
             "name": "FONT_OSWALD_LIGHT_18",
             "file": "Oswald-Light.ttf",
-            "characterRegex": "[A-Za-z0-9,\\-\\. ]"
+            "characterRegex": "[A-Za-z0-9,/\\-\\. ]"
         },
         {
             "type": "pbi",

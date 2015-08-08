@@ -56,7 +56,6 @@ static void window_load(Window *window) {
     text_layer = text_layer_create(GRect(16, 113, 128, 24));
     text_layer_set_background_color(text_layer, GColorBlack);
     text_layer_set_text_color(text_layer, GColorWhite);
-    text_layer_set_text(text_layer, "Hsinchu, Taiwan");
 
     text_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_OSWALD_LIGHT_18));
     text_layer_set_font(text_layer, text_font);
@@ -84,15 +83,16 @@ static void window_unload(Window *window) {
 }
 
 static void update_time(struct tm *tick_time) {
-    static char buffer[] = "00:00";
+    static char time_buffer[8];
+    static char text_buffer[32];
 
-    if (clock_is_24h_style() == true) {
-        strftime(buffer, sizeof("00:00"), "%H:%M", tick_time);
-    } else {
-        strftime(buffer, sizeof("00:00"), "%I:%M", tick_time);
-    }
+    clock_copy_time_string(time_buffer, sizeof(time_buffer));
+    text_layer_set_text(time_layer, time_buffer);
 
-    text_layer_set_text(time_layer, buffer);
+    static char* weekdays[7] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+    snprintf(text_buffer, sizeof(text_buffer),
+             "%d.%d.%d %s", 1900 + tick_time->tm_year, 1 + tick_time->tm_mon, tick_time->tm_mday, weekdays[tick_time->tm_wday]);
+    text_layer_set_text(text_layer, text_buffer);
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
