@@ -1,0 +1,18 @@
+{
+  "uuid": "2403e64a-efc2-4dd6-9c68-01b45de325b3",
+  "shortName": "metro",
+  "longName": "metro",
+  "companyName": "MakeAwesomeHappen",
+  "versionLabel": "1.0",
+  "sdkVersion": "3",
+  "targetPlatforms": ["aplite", "basalt"],
+  "watchapp": {
+    "watchface": false
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": []
+  }
+}
