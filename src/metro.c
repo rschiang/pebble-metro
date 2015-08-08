@@ -13,9 +13,18 @@ static TextLayer *text_layer;
 static GFont *time_font;
 static TextLayer *time_layer;
 
+
+static inline struct tm *get_time() {
+    time_t t = time(NULL);
+    return localtime(&t);
+}
+
 static void deco_layer_onupdate(Layer *this_layer, GContext *ctx) {
-    struct tm *tick_time = get_time();
     GColor color = GColorClear;
+
+#ifdef PBL_COLOR
+    // Determine the color of deco layer based on time of day
+    struct tm *tick_time = get_time();
     if (tick_time->tm_hour >= 22 && tick_time->tm_hour < 2)
         color = GColorCobaltBlue;   // 0x0070bc -> 0x0055aa, Line 5
     else if (tick_time->tm_hour < 6)
@@ -25,10 +34,10 @@ static void deco_layer_onupdate(Layer *this_layer, GContext *ctx) {
     else if (tick_time->tm_hour < 14)
         color = GColorChromeYellow; // 0xf8b51c -> 0xffaa00, Line 4
     else if (tick_time->tm_hour < 18)
-        color = GColorYellow;       // Circular Line
+        color = GColorYellow;       //             0xffff00, Circular Line
     else
         color = GColorJaegerGreen;  // 0x01865b -> 0x00aa55, Line 3
-
+#endif
     graphics_context_set_fill_color(ctx, color);
     graphics_fill_rect(ctx, layer_get_bounds(this_layer), 0, GCornerNone);
 }
@@ -74,11 +83,6 @@ static void window_unload(Window *window) {
     bitmap_layer_destroy(image_layer);
 }
 
-static inline struct tm *get_time() {
-    time_t t = time(NULL);
-    return localtime(&t);
-}
-
 static void update_time(struct tm *tick_time) {
     static char buffer[] = "00:00";
 
@@ -109,7 +113,7 @@ static void init(void) {
     tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
 
     // Get current time beforehand
-    update_time(get_time();
+    update_time(get_time());
 }
 
 static void deinit(void) {
