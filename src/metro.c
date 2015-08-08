@@ -89,9 +89,12 @@ static void update_time(struct tm *tick_time) {
     clock_copy_time_string(time_buffer, sizeof(time_buffer));
     text_layer_set_text(time_layer, time_buffer);
 
-    static char* weekdays[7] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-    snprintf(text_buffer, sizeof(text_buffer),
-             "%d.%d.%d %s", 1900 + tick_time->tm_year, 1 + tick_time->tm_mon, tick_time->tm_mday, weekdays[tick_time->tm_wday]);
+    static char* months[12] = {
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    };
+
+    snprintf(text_buffer, sizeof(text_buffer), "%s %d", months[tick_time->tm_mon], tick_time->tm_mday);
     text_layer_set_text(text_layer, text_buffer);
 }
 
