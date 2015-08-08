@@ -13,6 +13,13 @@
     "dummy": 0
   },
   "resources": {
-    "media": []
+    "media": [
+        {
+            "type": "font",
+            "name": "FONT_OSWALD_REGULAR_48",
+            "file": "Oswald-Regular.ttf",
+            "characterRegex": "[0-9:A-Za-z° ]"
+        }
+    ]
   }
 }

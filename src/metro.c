@@ -1,6 +1,7 @@
 #include <pebble.h>
 
 static Window *window;
+static GFont *text_font;
 static TextLayer *text_layer;
 
 static void window_load(Window *window) {
@@ -10,13 +11,16 @@ static void window_load(Window *window) {
     text_layer = text_layer_create(GRect(0, 55, 144, 50));
     text_layer_set_background_color(text_layer, GColorClear);
     text_layer_set_text_color(text_layer, GColorBlack);
-    text_layer_set_font(text_layer, fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD));
     text_layer_set_text_alignment(text_layer, GTextAlignmentCenter);
+
+    text_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_OSWALD_REGULAR_48));
+    text_layer_set_font(text_layer, text_font);
 
     layer_add_child(window_layer, text_layer_get_layer(text_layer));
 }
 
 static void window_unload(Window *window) {
+    fonts_unload_custom_font(text_font);
     text_layer_destroy(text_layer);
 }
 
