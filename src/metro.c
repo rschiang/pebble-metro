@@ -13,6 +13,14 @@ static TextLayer *text_layer;
 static GFont *time_font;
 static TextLayer *time_layer;
 
+#ifdef PBL_COLOR
+    #define METRO_APP_TEXT_COLOR GColorWhite
+    #define METRO_APP_BACK_COLOR GColorBlack
+#else
+    #define METRO_APP_TEXT_COLOR GColorBlack
+    #define METRO_APP_BACK_COLOR GColorWhite
+#endif
+
 
 static inline struct tm *get_time() {
     time_t t = time(NULL);
@@ -20,13 +28,13 @@ static inline struct tm *get_time() {
 }
 
 static void deco_layer_onupdate(Layer *this_layer, GContext *ctx) {
-    GColor color = GColorClear;
+    GColor color = METRO_APP_BACK_COLOR;
 
 #ifdef PBL_COLOR
     // Determine the color of deco layer based on time of day
     struct tm *tick_time = get_time();
     if (tick_time->tm_hour >= 22 && tick_time->tm_hour < 2)
-        color = GColorCobaltBlue;   // 0x0070bc -> 0x0055aa, Line 5
+        color = GColorPurpureus;    // 0x7b5aa3 -> 0xaa55aa, Airport Express
     else if (tick_time->tm_hour < 6)
         color = GColorRed;          // 0xe3002d -> 0xff0000, Line 2
     else if (tick_time->tm_hour < 10)
@@ -34,9 +42,9 @@ static void deco_layer_onupdate(Layer *this_layer, GContext *ctx) {
     else if (tick_time->tm_hour < 14)
         color = GColorChromeYellow; // 0xf8b51c -> 0xffaa00, Line 4
     else if (tick_time->tm_hour < 18)
-        color = GColorYellow;       //             0xffff00, Circular Line
-    else
         color = GColorJaegerGreen;  // 0x01865b -> 0x00aa55, Line 3
+    else
+        color = GColorCobaltBlue;   // 0x0070bc -> 0x0055aa, Line 5
 #endif
     graphics_context_set_fill_color(ctx, color);
     graphics_fill_rect(ctx, layer_get_bounds(this_layer), 0, GCornerNone);
@@ -54,15 +62,15 @@ static void window_load(Window *window) {
     bitmap_layer_set_bitmap(image_layer, arrow_image);
 
     text_layer = text_layer_create(GRect(16, 113, 128, 24));
-    text_layer_set_background_color(text_layer, GColorBlack);
-    text_layer_set_text_color(text_layer, GColorWhite);
+    text_layer_set_background_color(text_layer, METRO_APP_BACK_COLOR);
+    text_layer_set_text_color(text_layer, METRO_APP_TEXT_COLOR);
 
     text_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_OSWALD_LIGHT_18));
     text_layer_set_font(text_layer, text_font);
 
     time_layer = text_layer_create(GRect(16, 58, 128, 48));
-    text_layer_set_background_color(time_layer, GColorBlack);
-    text_layer_set_text_color(time_layer, GColorWhite);
+    text_layer_set_background_color(time_layer, METRO_APP_BACK_COLOR);
+    text_layer_set_text_color(time_layer, METRO_APP_TEXT_COLOR);
 
     time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_OSWALD_REGULAR_48));
     text_layer_set_font(time_layer, time_font);
@@ -104,7 +112,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 
 static void init(void) {
     window = window_create();
-    window_set_background_color(window, GColorBlack);
+    window_set_background_color(window, METRO_APP_BACK_COLOR);
     window_set_window_handlers(window, (WindowHandlers) {
         .load = window_load,
         .unload = window_unload,
