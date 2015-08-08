@@ -14,7 +14,7 @@ static void window_load(Window *window) {
     image_layer = bitmap_layer_create(GRect(12, 16, 24, 24));
     bitmap_layer_set_bitmap(image_layer, arrow_image);
 
-    text_layer = text_layer_create(GRect(16, 48, 128, 72));
+    text_layer = text_layer_create(GRect(16, 62, 128, 48));
     text_layer_set_background_color(text_layer, GColorBlack);
     text_layer_set_text_color(text_layer, GColorWhite);
 
