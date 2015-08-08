@@ -16,10 +16,10 @@ static void window_load(Window *window) {
     GRect bounds = layer_get_bounds(window_layer);
 
     arrow_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_ARROW_24);
-    image_layer = bitmap_layer_create(GRect(12, 16, 24, 24));
+    image_layer = bitmap_layer_create(GRect(12, 20, 24, 24));
     bitmap_layer_set_bitmap(image_layer, arrow_image);
 
-    text_layer = text_layer_create(GRect(16, 116, 128, 24));
+    text_layer = text_layer_create(GRect(16, 113, 128, 24));
     text_layer_set_background_color(text_layer, GColorBlack);
     text_layer_set_text_color(text_layer, GColorWhite);
     text_layer_set_text(text_layer, "Hsinchu, Taiwan");
@@ -27,7 +27,7 @@ static void window_load(Window *window) {
     text_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_OSWALD_LIGHT_18));
     text_layer_set_font(text_layer, text_font);
 
-    time_layer = text_layer_create(GRect(16, 62, 128, 48));
+    time_layer = text_layer_create(GRect(16, 58, 128, 48));
     text_layer_set_background_color(time_layer, GColorBlack);
     text_layer_set_text_color(time_layer, GColorWhite);
 
