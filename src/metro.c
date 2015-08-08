@@ -2,6 +2,8 @@
 
 static Window *window;
 
+static Layer *deco_layer;
+
 static GBitmap *arrow_image;
 static BitmapLayer *image_layer;
 
@@ -11,9 +13,32 @@ static TextLayer *text_layer;
 static GFont *time_font;
 static TextLayer *time_layer;
 
+static void deco_layer_onupdate(Layer *this_layer, GContext *ctx) {
+    struct tm *tick_time = get_time();
+    GColor color = GColorClear;
+    if (tick_time->tm_hour >= 22 && tick_time->tm_hour < 2)
+        color = GColorCobaltBlue;   // 0x0070bc -> 0x0055aa, Line 5
+    else if (tick_time->tm_hour < 6)
+        color = GColorRed;          // 0xe3002d -> 0xff0000, Line 2
+    else if (tick_time->tm_hour < 10)
+        color = GColorRajah;        // 0xc48d33 -> 0xffaa55, Line 1
+    else if (tick_time->tm_hour < 14)
+        color = GColorChromeYellow; // 0xf8b51c -> 0xffaa00, Line 4
+    else if (tick_time->tm_hour < 18)
+        color = GColorYellow;       // Circular Line
+    else
+        color = GColorJaegerGreen;  // 0x01865b -> 0x00aa55, Line 3
+
+    graphics_context_set_fill_color(ctx, color);
+    graphics_fill_rect(ctx, layer_get_bounds(this_layer), 0, GCornerNone);
+}
+
 static void window_load(Window *window) {
     Layer *window_layer = window_get_root_layer(window);
     GRect bounds = layer_get_bounds(window_layer);
+
+    deco_layer = layer_create(GRect(0, 0, 144, 8));
+    layer_set_update_proc(deco_layer, deco_layer_onupdate);
 
     arrow_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_ARROW_24);
     image_layer = bitmap_layer_create(GRect(12, 20, 24, 24));
@@ -34,6 +59,7 @@ static void window_load(Window *window) {
     time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_OSWALD_REGULAR_48));
     text_layer_set_font(time_layer, time_font);
 
+    layer_add_child(window_layer, deco_layer);
     layer_add_child(window_layer, bitmap_layer_get_layer(image_layer));
     layer_add_child(window_layer, text_layer_get_layer(text_layer));
     layer_add_child(window_layer, text_layer_get_layer(time_layer));
@@ -46,6 +72,11 @@ static void window_unload(Window *window) {
     text_layer_destroy(text_layer);
     gbitmap_destroy(arrow_image);
     bitmap_layer_destroy(image_layer);
+}
+
+static inline struct tm *get_time() {
+    time_t t = time(NULL);
+    return localtime(&t);
 }
 
 static void update_time(struct tm *tick_time) {
@@ -78,9 +109,7 @@ static void init(void) {
     tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
 
     // Get current time beforehand
-    time_t t = time(NULL);
-    struct tm *tick_time = localtime(&t);
-    update_time(tick_time);
+    update_time(get_time();
 }
 
 static void deinit(void) {
