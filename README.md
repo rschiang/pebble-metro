@@ -2,6 +2,9 @@ Metro
 =====
 
 ![Screenshot](docs/screenshot.png)
+![Screenshot](docs/screenshot_2.png)
+![Screenshot](docs/screenshot_3.png)
+![Screenshot](docs/screenshot_bw.png)
 
 A [Taipei Metro](http://www.metro.taipei) inspired Pebble watchface. Compatible with Pebble (Aplite) and Pebble Time (Basalt).
 
