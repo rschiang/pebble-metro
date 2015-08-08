@@ -2,12 +2,12 @@
   "uuid": "2403e64a-efc2-4dd6-9c68-01b45de325b3",
   "shortName": "metro",
   "longName": "metro",
-  "companyName": "MakeAwesomeHappen",
+  "companyName": "RSChiang",
   "versionLabel": "1.0",
   "sdkVersion": "3",
   "targetPlatforms": ["aplite", "basalt"],
   "watchapp": {
-    "watchface": false
+    "watchface": true
   },
   "appKeys": {
     "dummy": 0
