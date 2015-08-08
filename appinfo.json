@@ -18,7 +18,13 @@
             "type": "font",
             "name": "FONT_OSWALD_REGULAR_48",
             "file": "Oswald-Regular.ttf",
-            "characterRegex": "[0-9:A-Za-z° ]"
+            "characterRegex": "[0-9:\\-\\. ]"
+        },
+        {
+            "type": "font",
+            "name": "FONT_OSWALD_LIGHT_18",
+            "file": "Oswald-Light.ttf",
+            "characterRegex": "[A-Za-z0-9,\\-\\. ]"
         },
         {
             "type": "pbi",
