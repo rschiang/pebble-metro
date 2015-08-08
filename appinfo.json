@@ -19,6 +19,11 @@
             "name": "FONT_OSWALD_REGULAR_48",
             "file": "Oswald-Regular.ttf",
             "characterRegex": "[0-9:A-Za-z° ]"
+        },
+        {
+            "type": "pbi",
+            "name": "IMAGE_ARROW_24",
+            "file": "arrow-24.png"
         }
     ]
   }

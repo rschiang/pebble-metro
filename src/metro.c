@@ -1,6 +1,8 @@
 #include <pebble.h>
 
 static Window *window;
+static GBitmap *arrow_image;
+static BitmapLayer *image_layer;
 static GFont *text_font;
 static TextLayer *text_layer;
 
@@ -8,14 +10,18 @@ static void window_load(Window *window) {
     Layer *window_layer = window_get_root_layer(window);
     GRect bounds = layer_get_bounds(window_layer);
 
-    text_layer = text_layer_create(GRect(0, 55, 144, 50));
-    text_layer_set_background_color(text_layer, GColorClear);
-    text_layer_set_text_color(text_layer, GColorBlack);
-    text_layer_set_text_alignment(text_layer, GTextAlignmentCenter);
+    arrow_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_ARROW_24);
+    image_layer = bitmap_layer_create(GRect(12, 16, 24, 24));
+    bitmap_layer_set_bitmap(image_layer, arrow_image);
+
+    text_layer = text_layer_create(GRect(16, 48, 128, 72));
+    text_layer_set_background_color(text_layer, GColorBlack);
+    text_layer_set_text_color(text_layer, GColorWhite);
 
     text_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_OSWALD_REGULAR_48));
     text_layer_set_font(text_layer, text_font);
 
+    layer_add_child(window_layer, bitmap_layer_get_layer(image_layer));
     layer_add_child(window_layer, text_layer_get_layer(text_layer));
 }
 
@@ -42,6 +48,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 
 static void init(void) {
     window = window_create();
+    window_set_background_color(window, GColorBlack);
     window_set_window_handlers(window, (WindowHandlers) {
         .load = window_load,
         .unload = window_unload,
