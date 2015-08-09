@@ -52,7 +52,7 @@ static void deco_layer_onupdate(Layer *this_layer, GContext *ctx) {
 
 static void window_load(Window *window) {
     Layer *window_layer = window_get_root_layer(window);
-    GRect bounds = layer_get_bounds(window_layer);
+    // GRect bounds = layer_get_bounds(window_layer);
 
     deco_layer = layer_create(GRect(0, 0, 144, 8));
     layer_set_update_proc(deco_layer, deco_layer_onupdate);
@@ -94,7 +94,8 @@ static void update_time(struct tm *tick_time) {
     static char time_buffer[8];
     static char text_buffer[32];
 
-    clock_copy_time_string(time_buffer, sizeof(time_buffer));
+    int hours = clock_is_24h_style() ? tick_time->tm_hour : tick_time->tm_hour - 12;
+    snprintf(time_buffer, sizeof(time_buffer), "%d:%02d", hours, tick_time->tm_min);
     text_layer_set_text(time_layer, time_buffer);
 
     static char* months[12] = {
